@@ -1,0 +1,3 @@
+-- Projet : K-Beauty Database
+-- Base de données PostgreSQL
+-- Le script sera complété progressivement.
