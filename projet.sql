@@ -121,3 +121,36 @@ VALUES
 (1, 3, 1, 17.90),
 (2, 2, 1, 12.50),
 (3, 5, 2, 21.00);
+
+
+-- =====================================================
+-- GENERATION DE 10 000 COMMANDES SUPPLEMENTAIRES
+-- =====================================================
+
+INSERT INTO commandes (client_id, date_commande, statut)
+SELECT
+    1 + (i % 3),
+    TIMESTAMP '2026-01-01 10:00:00'
+        + (i % 365) * INTERVAL '1 day',
+    CASE
+        WHEN i % 4 = 0 THEN 'payee'
+        WHEN i % 4 = 1 THEN 'expediee'
+        WHEN i % 4 = 2 THEN 'livree'
+        ELSE 'en_attente'
+    END
+FROM generate_series(1, 10000) AS i;
+
+
+-- GENERATION DES DETAILS DE COMMANDE
+
+INSERT INTO details_commande
+    (commande_id, produit_id, quantite, prix_unitaire)
+SELECT
+    c.id,
+    1 + ((c.id - 1) % 6),
+    1 + (c.id % 3),
+    p.prix
+FROM commandes c
+JOIN produits p
+    ON p.id = 1 + ((c.id - 1) % 6)
+WHERE c.id > 3;
