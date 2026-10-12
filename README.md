@@ -24,7 +24,17 @@
 2. `docker run -d --name kbeauty-postgres -e POSTGRES_USER=kbeauty_user -e POSTGRES_PASSWORD=<votre_mot_de_passe> -e POSTGRES_DB=kbeauty_db -p 15432:5432 postgres:17`
 3. Exécuter projet.sql dans TablePlus (PostgreSQL, 127.0.0.1, port 15432)
 
+### Index
+**Ce qu'ils font :** Création de deux index sur la table `commandes` (colonnes `statut` et `client_id`) pour accélérer la recherche ciblée.
+**Pourquoi ils sont là :** La table `commandes` contient 10 000 lignes. Les index optimisent les requêtes fréquentes, notamment celles utilisées par la vue du contrôleur qui regroupe les données par statut.
+**La preuve :**
+Requête 1 : `EXPLAIN ANALYZE SELECT * FROM commandes WHERE statut = 'en_attente';`
+- Temps avant index : 0.742 ms
+- Temps après index : 0.305 ms
 
+Requête 2 : `EXPLAIN ANALYZE SELECT * FROM commandes WHERE client_id = 2;`
+- Temps avant index : 0.539 ms
+- Temps après index : 0.429 ms
 
 
 
