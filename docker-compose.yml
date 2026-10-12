@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:17
+    container_name: kbeauty-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: kbeauty_user
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+      POSTGRES_DB: kbeauty_db
+    ports:
+      - "15432:5432"
+    volumes:
+      - kbeauty_pgdata:/var/lib/postgresql/data
+
+volumes:
+  kbeauty_pgdata:
