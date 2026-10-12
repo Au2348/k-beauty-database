@@ -7,8 +7,8 @@
 - [x] Données de test
 - [x] Génération de 10 000 commandes
 - [x] Base PostgreSQL lancée dans Docker, connectée à TablePlus
-- [ ] Fonction (total d'une commande)
-- [ ] Trigger (protection du stock)
+- [x] Fonction (total d'une commande)
+- [x] Trigger (protection du stock)
 - [ ] Vues (une par rôle)
 - [ ] Rôles et utilisateurs (2)
 - [ ] Index (temps avant / après)
