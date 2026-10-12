@@ -1,5 +1,33 @@
 # # 💮💮💮💮💮 K-Beauty Database 💮💮💮💮💮
 
+## Avancement du projet
+
+- [x] Conception (conception.md)
+- [x] Création des 7 tables
+- [x] Données de test
+- [x] Génération de 10 000 commandes
+- [x] Base PostgreSQL lancée dans Docker, connectée à TablePlus
+- [ ] Fonction (total d'une commande)
+- [ ] Trigger (protection du stock)
+- [ ] Vues (une par rôle)
+- [ ] Rôles et utilisateurs (2)
+- [ ] Index (temps avant / après)
+- [ ] README final
+- [ ] Test du script sur une base vide
+
+## Qui fait quoi
+- aurelie: tables, données, ...
+- patrick : ...
+
+## Comment lancer la base en local
+1. Docker Desktop doit être démarré
+2. `docker run -d --name kbeauty-postgres -e POSTGRES_USER=kbeauty_user -e POSTGRES_PASSWORD=<votre_mot_de_passe> -e POSTGRES_DB=kbeauty_db -p 15432:5432 postgres:17`
+3. Exécuter projet.sql dans TablePlus (PostgreSQL, 127.0.0.1, port 15432)
+
+
+
+
+
 ##🌺 Présentation du projet
 
 Ce projet consiste à concevoir une base de données PostgreSQL pour une boutique spécialisée dans les cosmétiques coréens (K-Beauty).
