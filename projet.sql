@@ -258,3 +258,13 @@ GRANT role_controleur TO user_controleur;
 -- Droits : sur les vues uniquement, jamais sur les tables
 GRANT SELECT, INSERT, UPDATE ON v_vendeur_commandes TO role_vendeur;
 GRANT SELECT ON v_controleur_ventes TO role_controleur;
+
+-- =====================================================
+-- INDEX
+-- =====================================================
+
+-- Index 1 : Optimiser la recherche par statut (utile pour la vue du contrôleur)
+CREATE INDEX idx_commandes_statut ON commandes(statut);
+
+-- Index 2 : Optimiser la recherche des commandes d'un client spécifique
+CREATE INDEX idx_commandes_client_id ON commandes(client_id);
