@@ -209,3 +209,52 @@ CREATE TRIGGER trg_stock_details_commande
 BEFORE INSERT ON details_commande
 FOR EACH ROW
 EXECUTE FUNCTION verifier_et_mettre_a_jour_stock();
+
+
+-- =====================================================
+-- VUES
+-- =====================================================
+
+-- Vue du vendeur : voit et gère les commandes, sans accès aux emails des clients
+CREATE OR REPLACE VIEW v_vendeur_commandes AS
+SELECT id, client_id, date_commande, statut
+FROM commandes;
+
+-- Vue du contrôleur : chiffres globaux par statut, aucune donnée personnelle
+CREATE OR REPLACE VIEW v_controleur_ventes AS
+SELECT
+    c.statut,
+    COUNT(DISTINCT c.id) AS nb_commandes,
+    COALESCE(SUM(d.quantite * d.prix_unitaire), 0) AS chiffre_affaires
+FROM commandes c
+LEFT JOIN details_commande d ON d.commande_id = c.id
+GROUP BY c.statut;
+
+-- =====================================================
+-- ROLES ET UTILISATEURS
+-- =====================================================
+
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'role_vendeur') THEN
+        CREATE ROLE role_vendeur NOLOGIN;
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'role_controleur') THEN
+        CREATE ROLE role_controleur NOLOGIN;
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'user_vendeur') THEN
+        CREATE ROLE user_vendeur LOGIN PASSWORD 'vendeur_test';
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'user_controleur') THEN
+        CREATE ROLE user_controleur LOGIN PASSWORD 'controleur_test';
+    END IF;
+END
+$$;
+
+-- Chaque utilisateur reçoit un rôle-métier
+GRANT role_vendeur TO user_vendeur;
+GRANT role_controleur TO user_controleur;
+
+-- Droits : sur les vues uniquement, jamais sur les tables
+GRANT SELECT, INSERT, UPDATE ON v_vendeur_commandes TO role_vendeur;
+GRANT SELECT ON v_controleur_ventes TO role_controleur;
