@@ -60,87 +60,28 @@ CREATE TABLE details_commande (
     PRIMARY KEY (commande_id, produit_id)
 );
 
+
 -- =====================================================
--- DONNEES
--- On remplit d'abord les tables référencées,
--- puis celles qui pointent vers elles.
+-- INSERTION DES DONNEES DE TEST
 -- =====================================================
 
--- Marques (ids 1 à 5)
+-- MARQUES
 INSERT INTO marques (nom, pays_origine) VALUES
-    ('COSRX', 'Corée du Sud'),
-    ('Beauty of Joseon', 'Corée du Sud'),
-    ('Anua', 'Corée du Sud'),
-    ('Innisfree', 'Corée du Sud'),
-    ('Laneige', 'Corée du Sud');
+('COSRX', 'Coree du Sud'),
+('Beauty of Joseon', 'Coree du Sud'),
+('Anua', 'Coree du Sud'),
+('SKIN1004', 'Coree du Sud');
 
--- Ingrédients (ids 1 à 8)
+-- INGREDIENTS
 INSERT INTO ingredients (nom, fonction) VALUES
-    ('Niacinamide', 'Uniformise le teint'),
-    ('Acide hyaluronique', 'Hydrate'),
-    ('Centella asiatica', 'Apaise'),
-    ('Mucine d''escargot', 'Répare et hydrate'),
-    ('Propolis', 'Nourrit et apaise'),
-    ('Thé vert', 'Antioxydant'),
-    ('Rétinol', 'Anti-âge'),
-    ('Extrait de riz', 'Éclat et douceur');
+('Niacinamide', 'Soin de la peau'),
+('Acide hyaluronique', 'Hydratation'),
+('Centella asiatica', 'Apaisement'),
+('Riz', 'Ingredient cosmetique'),
+('Mucine d escargot', 'Ingredient cosmetique');
 
--- Produits (ids 1 à 20), 500 en stock chacun
--- Les prix sont fictifs, ce n'est pas grave pour le projet.
-INSERT INTO produits (marque_id, nom, categorie, prix, stock) VALUES
-    (1, 'Advanced Snail 96 Mucin Power Essence', 'essence', 21.00, 500),
-    (1, 'Low pH Good Morning Gel Cleanser', 'nettoyant', 12.00, 500),
-    (1, 'BHA Blackhead Power Liquid', 'exfoliant', 25.00, 500),
-    (1, 'Aloe Soothing Sun Cream', 'solaire', 15.00, 500),
-    (2, 'Glow Serum Propolis + Niacinamide', 'sérum', 17.00, 500),
-    (2, 'Relief Sun Rice + Probiotics', 'solaire', 16.00, 500),
-    (2, 'Dynasty Cream', 'crème', 28.00, 500),
-    (2, 'Green Plum Refreshing Cleanser', 'nettoyant', 14.00, 500),
-    (3, 'Heartleaf 77% Soothing Toner', 'tonique', 22.00, 500),
-    (3, 'Heartleaf Pore Control Cleansing Oil', 'nettoyant', 20.00, 500),
-    (3, 'Niacinamide 10% + TXA 4% Serum', 'sérum', 24.00, 500),
-    (3, 'Rice 70 Glow Milky Toner', 'tonique', 23.00, 500),
-    (4, 'Green Tea Seed Serum', 'sérum', 28.00, 500),
-    (4, 'Daily UV Protection Cream', 'solaire', 13.00, 500),
-    (4, 'Jeju Volcanic Pore Clay Mask', 'masque', 15.00, 500),
-    (4, 'Retinol Cica Moisture Barrier Cream', 'crème', 26.00, 500),
-    (5, 'Water Sleeping Mask', 'masque', 29.00, 500),
-    (5, 'Cream Skin Refiner', 'tonique', 32.00, 500),
-    (5, 'Lip Sleeping Mask', 'soin lèvres', 24.00, 500),
-    (5, 'Water Bank Blue Hyaluronic Cream', 'crème', 35.00, 500);
-
--- Produits <-> ingrédients (quelques exemples)
-INSERT INTO produits_ingredients (produit_id, ingredient_id, concentration) VALUES
-    (1, 4, 96.00),
-    (5, 5, 60.00),
-    (5, 1, 2.00),
-    (11, 1, 10.00),
-    (12, 8, 70.00),
-    (13, 6, NULL),
-    (16, 7, NULL),
-    (16, 3, NULL),
-    (20, 2, NULL);
-
--- Clients : 100 clients générés
-INSERT INTO clients (nom, email)
-SELECT 'Client ' || i,
-       'client' || i || '@example.com'
-FROM generate_series(1, 100) AS i;
-
--- Commandes : 10 000 commandes générées
-INSERT INTO commandes (client_id, date_commande, statut)
-SELECT 1 + (i % 100),
-       timestamp '2026-01-01' + (i % 300) * interval '1 day',
-       (ARRAY['en_attente','payee','expediee','livree','annulee'])[1 + (i % 5)]
-FROM generate_series(1, 10000) AS i;
-
--- Détails : 2 produits différents par commande = 20 000 lignes
-INSERT INTO details_commande (commande_id, produit_id, quantite, prix_unitaire)
-SELECT i, p.id, 1 + (i % 3), p.prix
-FROM generate_series(1, 10000) AS i
-JOIN produits p ON p.id = 1 + (i % 20);
-
-INSERT INTO details_commande (commande_id, produit_id, quantite, prix_unitaire)
-SELECT i, p.id, 1 + (i % 3), p.prix
-FROM generate_series(1, 10000) AS i
-JOIN produits p ON p.id = 1 + ((i + 7) % 20);
+-- CLIENTS
+INSERT INTO clients (nom, email) VALUES
+('Camille Martin', 'camille@example.com'),
+('Alex Bernard', 'alex@example.com'),
+('Sarah Petit', 'sarah@example.com');
