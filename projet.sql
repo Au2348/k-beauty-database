@@ -85,3 +85,39 @@ INSERT INTO clients (nom, email) VALUES
 ('Camille Martin', 'camille@example.com'),
 ('Alex Bernard', 'alex@example.com'),
 ('Sarah Petit', 'sarah@example.com');
+
+
+-- PRODUITS
+INSERT INTO produits (marque_id, nom, categorie, prix, stock) VALUES
+(1, 'Advanced Snail 96 Mucin Essence', 'Essence', 22.90, 50),
+(1, 'Low pH Good Morning Gel Cleanser', 'Nettoyant', 12.50, 40),
+(2, 'Glow Serum', 'Serum', 17.90, 35),
+(2, 'Relief Sun', 'Protection solaire', 18.90, 60),
+(3, 'Heartleaf 77 Soothing Toner', 'Toner', 21.00, 30),
+(4, 'Centella Ampoule', 'Serum', 19.90, 45);
+
+-- ASSOCIATION ENTRE PRODUITS ET INGREDIENTS
+INSERT INTO produits_ingredients
+    (produit_id, ingredient_id, concentration)
+VALUES
+(1, 5, NULL),
+(3, 1, NULL),
+(3, 4, NULL),
+(5, 3, NULL),
+(6, 3, NULL);
+
+
+-- COMMANDES
+INSERT INTO commandes (client_id, statut) VALUES
+(1, 'payee'),
+(2, 'en_attente'),
+(3, 'expediee');
+
+-- DETAILS DES COMMANDES
+INSERT INTO details_commande
+    (commande_id, produit_id, quantite, prix_unitaire)
+VALUES
+(1, 1, 2, 22.90),
+(1, 3, 1, 17.90),
+(2, 2, 1, 12.50),
+(3, 5, 2, 21.00);
