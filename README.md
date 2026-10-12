@@ -9,9 +9,9 @@
 - [x] Base PostgreSQL lancée dans Docker, connectée à TablePlus
 - [x] Fonction (total d'une commande)
 - [x] Trigger (protection du stock)
-- [ ] Vues (une par rôle)
-- [ ] Rôles et utilisateurs (2)
-- [ ] Index (temps avant / après)
+- [X] Vues (une par rôle)
+- [X] Rôles et utilisateurs (2)
+- [X] Index (temps avant / après)
 - [ ] README final
 - [ ] Test du script sur une base vide
 
