@@ -154,3 +154,58 @@ FROM commandes c
 JOIN produits p
     ON p.id = 1 + ((c.id - 1) % 6)
 WHERE c.id > 3;
+
+-- =====================================================
+-- FONCTION : TOTAL D'UNE COMMANDE
+-- =====================================================
+
+CREATE OR REPLACE FUNCTION total_commande(p_commande_id INTEGER)
+RETURNS NUMERIC(10, 2)
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    v_total NUMERIC(10, 2);
+BEGIN
+    SELECT COALESCE(SUM(quantite * prix_unitaire), 0)
+    INTO v_total
+    FROM details_commande
+    WHERE commande_id = p_commande_id;
+
+    RETURN v_total;
+END;
+$$;
+
+-- =====================================================
+-- TRIGGER : PROTECTION DU STOCK
+-- =====================================================
+
+CREATE OR REPLACE FUNCTION verifier_et_mettre_a_jour_stock()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    v_stock INTEGER;
+BEGIN
+    SELECT stock INTO v_stock
+    FROM produits
+    WHERE id = NEW.produit_id
+    FOR UPDATE;
+
+    IF v_stock < NEW.quantite THEN
+        RAISE EXCEPTION
+            'Stock insuffisant pour le produit % : % disponible(s), % demande(s)',
+            NEW.produit_id, v_stock, NEW.quantite;
+    END IF;
+
+    UPDATE produits
+    SET stock = stock - NEW.quantite
+    WHERE id = NEW.produit_id;
+
+    RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER trg_stock_details_commande
+BEFORE INSERT ON details_commande
+FOR EACH ROW
+EXECUTE FUNCTION verifier_et_mettre_a_jour_stock();
