@@ -70,3 +70,5 @@ La base permettra de gérer les marques, les produits, les ingrédients, les cli
 ## 🌺État du projet
 
 Projet en cours de conception. Le modèle de données, les fonctionnalités SQL et les tests seront complétés progressivement.
+
+
