@@ -255,9 +255,12 @@ $$;
 GRANT role_vendeur TO user_vendeur;
 GRANT role_controleur TO user_controleur;
 
--- Droits : sur les vues uniquement, jamais sur les tables
+-- Droits sur les vues
 GRANT SELECT, INSERT, UPDATE ON v_vendeur_commandes TO role_vendeur;
 GRANT SELECT ON v_controleur_ventes TO role_controleur;
+
+-- Droits sur les tables sous-jacentes (requis par PostgreSQL pour les vues auto-updatable)
+GRANT INSERT, UPDATE ON commandes TO role_vendeur;
 
 -- =====================================================
 -- INDEX
